@@ -1,0 +1,229 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "Container",
+      "spacing": "None",
+      "style": "emphasis",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Event Feedback"
+                }
+              ],
+              "width": "stretch",
+              "padding": "None"
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "4b3986aa-ca62-8df9-f4c9-5d9bc8585978",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Contoso_Logo.png",
+                  "horizontalAlignment": "Right",
+                  "altText": "Contoso Group Avatar",
+                  "height": "12px"
+                }
+              ],
+              "width": "auto",
+              "verticalContentAlignment": "Center",
+              "padding": "None"
+            }
+          ],
+          "padding": "None"
+        }
+      ],
+      "padding": "Default"
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "size": "Large",
+          "weight": "Bolder",
+          "text": "Help us improve by taking our short satisfaction survey.",
+          "wrap": true,
+          "style": "heading"
+        }
+      ],
+      "padding": "Default",
+      "spacing": "None",
+      "separator": true
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "weight": "Bolder",
+          "text": "1\\. How likely is that you would recommend the event to a friend or colleague?",
+          "wrap": true
+        },
+        {
+          "type": "Input.ChoiceSet",
+          "id": "Recommendation",
+          "placeholder": "Select rating",
+          "label": "How likely is that you would recommend the event to a friend or colleague? Please select an item in the list",
+          "choices": [
+            {
+              "title": "1",
+              "value": "1"
+            },
+            {
+              "title": "2",
+              "value": "2"
+            },
+            {
+              "title": "3",
+              "value": "3"
+            },
+            {
+              "title": "4",
+              "value": "4"
+            },
+            {
+              "title": "5",
+              "value": "5"
+            }
+          ],
+          "isRequired": true
+        },
+        {
+          "type": "TextBlock",
+          "weight": "Bolder",
+          "text": "2\\. Overall, how would you rate the event?",
+          "wrap": true,
+          "spacing": "Large"
+        },
+        {
+          "type": "Input.ChoiceSet",
+          "id": "OverallRating",
+          "placeholder": "Overall, how would you rate the event?",
+          "label": "Overall, how would you rate the event?",
+          "choices": [
+            {
+              "title": "Excellent",
+              "value": "Excellent"
+            },
+            {
+              "title": "Very Good",
+              "value": "Very Good"
+            },
+            {
+              "title": "Good",
+              "value": "Good"
+            },
+            {
+              "title": "Fair",
+              "value": "Fair"
+            },
+            {
+              "title": "Poor",
+              "value": "Poor"
+            }
+          ],
+          "style": "expanded",
+          "isRequired": true
+        },
+        {
+          "type": "TextBlock",
+          "weight": "Bolder",
+          "text": "3\\. What did you like about the event?",
+          "wrap": true,
+          "spacing": "Large"
+        },
+        {
+          "type": "Input.Text",
+          "id": "Comment",
+          "placeholder": "Tell us everything",
+          "label": "What did you like about the event?",
+          "isMultiline": true
+        },
+        {
+          "type": "TextBlock",
+          "weight": "Bolder",
+          "text": "4\\. When were you informed about the event?",
+          "wrap": true,
+          "spacing": "Large"
+        },
+        {
+          "type": "Input.Date",
+          "id": "InformedDate",
+          "isRequired": true,
+          "placeholder": "When were you informed about the event?",
+          "label": "When were you informed about the event?"
+        },
+        {
+          "type": "TextBlock",
+          "weight": "Bolder",
+          "text": "5\\. How would you describe the event?",
+          "wrap": true,
+          "spacing": "Large"
+        },
+        {
+          "type": "Input.ChoiceSet",
+          "id": "Feeling",
+          "placeholder": "How would you describe the event?",
+          "label": "How would you describe the event?",
+          "choices": [
+            {
+              "title": "Organized",
+              "value": "Organized"
+            },
+            {
+              "title": "Enjoyable",
+              "value": "Enjoyable"
+            },
+            {
+              "title": "Informative",
+              "value": "Informative"
+            },
+            {
+              "title": "Relevant",
+              "value": "Relevant"
+            },
+            {
+              "title": "Social",
+              "value": "Social"
+            }
+          ],
+          "style": "expanded",
+          "isMultiSelect": true,
+          "isRequired": true
+        },
+        {
+          "type": "ActionSet",
+          "actions": [
+            {
+              "type": "Action.Http",
+              "title": "Submit",
+              "method": "POST",
+              "url": "https://actionsplayground.azurewebsites.net/workspaces/IREXSqpHRk-hkfa7y7CAAw",
+              "body": "{\"Recommendation\": \"{{Recommendation.value}}\", \"OverallRating\":\"{{OverallRating.value}}\", \"Comment\":\"{{Comment.value}}\", \n\"InformedDate\":\"{{InformedDate.value}}\", \"Feeling\":\"{{Feeling.value}}\" }",
+              "isPrimary": true,
+              "style": "positive"
+            }
+          ]
+        }
+      ],
+      "padding": {
+        "top": "Small",
+        "bottom": "Default",
+        "left": "Default",
+        "right": "Default"
+      },
+      "spacing": "None"
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.0",
+  "padding": "None"
+}

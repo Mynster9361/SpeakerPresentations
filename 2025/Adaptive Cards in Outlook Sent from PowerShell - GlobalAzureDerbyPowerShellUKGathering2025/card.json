@@ -1,0 +1,457 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Container",
+      "id": "6343565f-52eb-c87b-c815-b772a86f1aca",
+      "padding": "Default",
+      "items": [
+        {
+          "type": "TextBlock",
+          "id": "d9c56323-fe1a-e090-1df5-311743b856cd",
+          "text": "Notification",
+          "wrap": true
+        }
+      ],
+      "spacing": "None",
+      "style": "emphasis"
+    },
+    {
+      "type": "Container",
+      "id": "03a273b0-e511-5f0d-3a44-1eddaa03a8a5",
+      "padding": "Default",
+      "spacing": "None",
+      "items": [
+        {
+          "type": "TextBlock",
+          "id": "231d74e7-5c53-6ec8-102d-718dc936bc09",
+          "text": "You have been mentioned in the conversation on Budget reports.",
+          "wrap": true,
+          "size": "Large",
+          "weight": "Bolder",
+          "style": "heading"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "id": "ConversationWrapper",
+      "padding": "Default",
+      "spacing": "None",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "id": "53fac03a-36e0-c77b-546a-01f4c727a73e",
+          "padding": "None",
+          "columns": [
+            {
+              "type": "Column",
+              "id": "3dcff824-b0a7-d451-1fc6-fcab789581eb",
+              "padding": "None",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "400cfa8-c21b-8b6c-ecd3-1ce1911e3c75",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Carlos_Slattery.png",
+                  "style": "Person",
+                  "size": "Small",
+                  "altText": "Rob Young Avatar"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "id": "28d1a10a-c916-35c1-c3f0-dea95c66e20e",
+              "padding": "None",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "id": "1f670ca5-a4ef-3344-75bb-ba69ffba0f99",
+                  "text": "Rob Young mentioned you",
+                  "wrap": true,
+                  "color": "Light"
+                },
+                {
+                  "type": "TextBlock",
+                  "id": "cd5ded6e-dfec-dc55-bee1-968b8a4b92f2",
+                  "text": "**@Kat Larsson** Can you check these numbers are accurate?",
+                  "wrap": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ColumnSet",
+          "id": "73fac03a-36e0-c77b-546a-01f4c727a73e",
+          "padding": "None",
+          "columns": [
+            {
+              "type": "Column",
+              "id": "3ecff824-b0a7-d451-1fc6-fcab789581eb",
+              "padding": "None",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "b00cfa8-c21b-8b6c-ecd3-1ce1911e3c75",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Kat_Larsson.png",
+                  "style": "Person",
+                  "size": "Small",
+                  "altText": "Your Avatar"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "id": "27d1a10a-c916-35c1-c3f0-dea95c66e20e",
+              "padding": "None",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "id": "1f70ca5-a4ef-3344-75bb-ba69ffba0f99",
+                  "text": "You replied",
+                  "wrap": true,
+                  "color": "Light"
+                },
+                {
+                  "type": "TextBlock",
+                  "id": "cd5dd6e-dfec-dc55-bee1-968b8a4b92f2",
+                  "text": "**@Rob Young** I checked the numbers, they're accurate.",
+                  "wrap": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ColumnSet",
+          "id": "76fac03a-36e0-c77b-546a-01f4c727a73e",
+          "padding": "None",
+          "columns": [
+            {
+              "type": "Column",
+              "id": "3ecf824-b0a7-d451-1fc6-fcab789581eb",
+              "padding": "None",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "b0cfa8-c21b-8b6c-ecd3-1ce1911e3c75",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Colin_Ballinger.png",
+                  "style": "Person",
+                  "size": "Small",
+                  "altText": "Collin Ballinger Avatar"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "id": "7d1a10a-c916-35c1-c3f0-dea95c66e20e",
+              "padding": "None",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "id": "1f60ca5-a4ef-3344-75bb-ba69ffba0f99",
+                  "text": "Collin Ballinger mentioned Daisy Philips",
+                  "wrap": true,
+                  "color": "Light"
+                },
+                {
+                  "type": "TextBlock",
+                  "id": "cd5ded6e-dfec-dc55-bee1-968b8a4b92f",
+                  "text": "**@Daisy Philips** Can you check these numbers are accurate?",
+                  "wrap": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ColumnSet",
+          "id": "76fac3a-36e0-c77b-546a-01f4c727a73e",
+          "padding": "None",
+          "columns": [
+            {
+              "type": "Column",
+              "id": "3ecf824-b07-d451-1fc6-fcab789581eb",
+              "padding": "None",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "4b00cfa8-c21b-b6c-ecd3-1ce1911e3c75",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Daisy_Phillips.png",
+                  "style": "Person",
+                  "size": "Small",
+                  "altText": "Daisy Philips Avatar"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "id": "7d1a10a-c96-35c1-c3f0-dea95c66e20e",
+              "padding": "None",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "id": "1f0ca5-a4ef-3344-75bb-ba69ffba0f99",
+                  "text": "Daisy Philips left a comment",
+                  "wrap": true,
+                  "color": "Light"
+                },
+                {
+                  "type": "TextBlock",
+                  "id": "cd5ded6e-d-dc55-bee1-968b8a4b92f2",
+                  "text": "**@Collin Ballinger** I think it looks fine.",
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "id": "bfdd25bb-367d-91f2-f469-39b8c6542cc4",
+                  "text": "8 more replies",
+                  "wrap": true,
+                  "color": "Accent"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ColumnSet",
+          "id": "76fac3a-c77b-546a-01f4c727a73e",
+          "padding": "None",
+          "columns": [
+            {
+              "type": "Column",
+              "id": "24-b07-d451-1fc6-fcab789581eb",
+              "padding": "None",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "4b00cfa8-c21b-b63-1ce1911e3c75",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Colin_Ballinger.png",
+                  "style": "Person",
+                  "size": "Small",
+                  "altText": "Collin Ballinger Avatar"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "id": "10a-c96-35c1-c3f0-dea95c66e20e",
+              "padding": "None",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "id": "5-a4ef-3344-75bb-ba69ffba0f99",
+                  "text": "Collin Ballinger left a comment",
+                  "wrap": true,
+                  "color": "Light"
+                },
+                {
+                  "type": "TextBlock",
+                  "id": "cdd6e-d-dc55-bee1-968b8a4b92f2",
+                  "text": "I think we need to hear from Kat.",
+                  "wrap": true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "isVisible": false
+    },
+    {
+      "type": "Container",
+      "id": "5db09e08-ae3d-95a8-6562-8e0a4682fcb1",
+      "padding": "Default",
+      "spacing": "None",
+      "style": "emphasis",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "id": "54fac03a-36e0-c77b-546a-01f4c727a73e",
+          "columns": [
+            {
+              "type": "Column",
+              "id": "6dcff824-b0a7-d451-1fc6-fcab789581eb",
+              "padding": "None",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "4b00cfa8-c21b-8b6c-ecd3-1ce1911e3c75",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Daisy_Phillips.png",
+                  "style": "Person",
+                  "size": "Small",
+                  "altText": "Daisy Philips Avatar"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "id": "38d1a10a-c916-35c1-c3f0-dea95c66e20e",
+              "padding": "None",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "id": "1f670ca5-a4ef-34-75bb-ba69ffba0f99",
+                  "text": "Daisy Philips mentioned you",
+                  "wrap": true,
+                  "color": "Light"
+                },
+                {
+                  "type": "TextBlock",
+                  "id": "cd5ded6e-dfec-dc55-e1-968b8a4b92f2",
+                  "text": "**@Kat Larsson** We do need to proceed ASAP to unblock the Dev team.",
+                  "wrap": true
+                }
+              ]
+            }
+          ],
+          "padding": "None"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "id": "f30f6dab-8ddb-877b-001c-d350c0a03a53",
+      "padding": "Default",
+      "items": [
+        {
+          "type": "ActionSet",
+          "actions": [
+            {
+              "type": "Action.ToggleVisibility",
+              "id": "ViewConversationHistory",
+              "title": "View conversation history",
+              "targetElements": [
+                "ViewConversationHistoryWrapper",
+                "ConversationWrapper",
+                "ActionsWrapper"
+              ],
+              "isPrimary": true,
+              "style": "positive"
+            }
+          ],
+          "id": "ViewConversationHistoryWrapper"
+        },
+        {
+          "type": "ActionSet",
+          "actions": [
+            {
+              "type": "Action.ShowCard",
+              "id": "caf22b50-33d3-2ea5-1b34-bcca0838bb33",
+              "title": "Reply to conversation",
+              "card": {
+                "type": "AdaptiveCard",
+                "padding": "None",
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "body": [
+                  {
+                    "type": "Input.Text",
+                    "id": "message",
+                    "placeholder": "Type your reply here",
+                    "isMultiline": true
+                  },
+                  {
+                    "type": "ActionSet",
+                    "id": "b86df692-99d9-8952-c1a7-d0cd0074934f",
+                    "actions": [
+                      {
+                        "type": "Action.Http",
+                        "id": "3ae59121-cb90-1205-c5d0-77646ffe183b",
+                        "title": "Submit",
+                        "method": "POST",
+                        "body": "{Message: {{message.value}}}",
+                        "url": "https://www.microsoft.com"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "style": "positive",
+              "isPrimary": true
+            },
+            {
+              "type": "Action.ToggleVisibility",
+              "title": "Go to conversation",
+              "targetElements": [
+                "ActionsWrapper",
+                "ConversationWrapper",
+                "ViewConversationHistoryWrapper"
+              ]
+            }
+          ],
+          "id": "ActionsWrapper",
+          "spacing": "None",
+          "isVisible": false
+        }
+      ],
+      "spacing": "None"
+    },
+    {
+      "type": "Container",
+      "id": "d7214071-02c9-f3d3-242a-20b3b0fbef6a",
+      "padding": "Default",
+      "spacing": "None",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "id": "e8c5b327-5a82-d7c5-b1c1-f653493ba321",
+          "columns": [
+            {
+              "type": "Column",
+              "id": "00dde06c-1602-ccd4-8446-59a65c1141cb",
+              "padding": "None",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "Image",
+                  "id": "9c114211-7316-6b33-aa5d-227c570f456b",
+                  "url": "https://amdesigner.azurewebsites.net/samples/assets/Contoso_Logo.png",
+                  "size": "Medium",
+                  "spacing": "None",
+                  "altText": "Contoso Group Avatar",
+                  "height": "12px"
+                }
+              ],
+              "spacing": "None",
+              "verticalContentAlignment": "Center"
+            },
+            {
+              "type": "Column",
+              "id": "44eb29d2-5f1c-00cd-630d-7256da2affbc",
+              "padding": "None",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "id": "a8103d34-3bc7-809d-b4a7-710c2a538eb5",
+                  "text": "[Privacy statement](https://amdesigner.azurewebsites.net)",
+                  "wrap": true,
+                  "size": "Small",
+                  "color": "Light"
+                }
+              ]
+            }
+          ],
+          "padding": "None"
+        }
+      ],
+      "separator": true
+    }
+  ],
+  "padding": "None"
+}
