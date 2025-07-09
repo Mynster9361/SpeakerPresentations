@@ -15,7 +15,7 @@
     - PowerShell 5.1 or later
     - Valid Azure AD application registration with appropriate permissions
     - Environment variables: tenantId, clientId, clientSecret
-    - Application permissions: User.ReadWrite.All, Group.ReadWrite.All, Application.ReadWrite.All
+    - Application permissions: User.ReadWrite.All, Group.ReadWrite.All, Application.ReadWrite.All, AppRoleAssignment.ReadWrite.All, User.Invite.All
 
 .PARAMETER DemoMode
     Run in demo mode with detailed output and confirmation prompts
@@ -44,6 +44,14 @@
     Creates sample data but skips creating users
 
 .EXAMPLE
+    .\Create-SampleData.ps1 -SkipAppRoleAssignments
+    Creates sample data but skips creating app role assignments
+
+.EXAMPLE
+    .\Create-SampleData.ps1 -SkipGuestUsers
+    Creates sample data but skips creating guest users
+
+.EXAMPLE
     .\Create-SampleData.ps1 -WhatIf
     Shows what demo resources would be cleaned up without deleting them
 
@@ -69,6 +77,12 @@ param(
 
   [Parameter(HelpMessage = "Skip creating sample applications")]
   [switch]$SkipApplications,
+
+  [Parameter(HelpMessage = "Skip creating app role assignments")]
+  [switch]$SkipAppRoleAssignments,
+
+  [Parameter(HelpMessage = "Skip creating guest users")]
+  [switch]$SkipGuestUsers,
 
   [Parameter(HelpMessage = "Only cleanup existing sample data")]
   [switch]$CleanupOnly,
@@ -156,7 +170,7 @@ $uniqueSuffix = "$timestamp$randomSuffix"
 # Define arrays for generating realistic names and roles
 $firstNames = @("John", "Jane", "Michael", "Sarah", "David", "Emily", "Robert", "Lisa", "James", "Maria", "William", "Linda", "Richard", "Patricia", "Charles", "Jennifer", "Thomas", "Elizabeth", "Christopher", "Susan", "Daniel", "Jessica", "Matthew", "Margaret", "Anthony", "Karen", "Mark", "Nancy", "Donald", "Betty", "Steven", "Helen", "Paul", "Sandra", "Andrew", "Donna", "Joshua", "Carol", "Kenneth", "Ruth", "Kevin", "Sharon", "Brian", "Michelle", "George", "Laura", "Edward", "Sarah", "Ronald", "Kimberly", "Timothy", "Deborah", "Jason", "Dorothy", "Jeffrey", "Amy", "Ryan", "Angela", "Jacob", "Ashley")
 
-$lastNames = @("Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts")
+$lastNames = @("Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", "Green", "AdAMS", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts")
 
 $departments = @("Engineering", "Sales", "Marketing", "Human Resources", "Finance", "Operations", "IT Support", "Customer Service", "Product Management", "Quality Assurance", "Research", "Legal", "Business Development", "Data Analytics", "Security", "Facilities", "Training", "Procurement")
 
@@ -337,6 +351,37 @@ Write-Host "  👥 Users: $($sampleUsers.Count)" -ForegroundColor Green
 Write-Host "  📁 Groups: $($sampleGroups.Count)" -ForegroundColor Green
 Write-Host "  🔧 Applications: $($sampleApplications.Count)" -ForegroundColor Green
 
+# Generate guest users (external users from partner organizations)
+$guestDomains = @("partner1.com", "partner2.com", "contractor.org", "vendor.net", "consultant.co", "external.biz", "freelancer.info", "agency.pro")
+$guestCompanies = @("Partner Corp", "Contractor Inc", "Vendor Solutions", "Consultant Group", "External Services", "Freelancer Hub", "Agency Pro", "Collaboration Partners")
+
+$sampleGuestUsers = @()
+for ($i = 1; $i -le 15; $i++) {
+  $firstName = $firstNames | Get-Random
+  $lastName = $lastNames | Get-Random
+  $domain = $guestDomains | Get-Random
+  $company = $guestCompanies | Get-Random
+
+  $invitedUserEmailAddress = "$($firstName.ToLower()).$($lastName.ToLower())@$domain"
+
+  $sampleGuestUsers += @{
+    invitedUserEmailAddress = $invitedUserEmailAddress
+    invitedUserDisplayName  = "$firstName $lastName"
+    inviteRedirectUrl       = "https://myapp.contoso.com"
+    invitedUserType         = "Guest"
+    sendInvitationMessage   = $false
+    invitedUserMessageInfo  = @{
+      messageLanguage       = "en-US"
+      customizedMessageBody = "Welcome to our organization! Please accept this invitation to collaborate with us."
+    }
+    companyName             = $company
+    jobTitle                = @("External Consultant", "Partner Representative", "Contractor", "Vendor Specialist", "External Developer", "Guest Researcher", "Partner Manager", "External Advisor") | Get-Random
+    department              = @("External", "Partners", "Contractors", "Vendors", "Consultants") | Get-Random
+  }
+}
+
+Write-Host "  👤 Guest Users: $($sampleGuestUsers.Count)" -ForegroundColor Green
+
 # Configuration for tracking created resources
 $createdResourcesFile = "./created-demo-resources.json"
 
@@ -358,6 +403,8 @@ function Remove-SampleData {
     Write-Host "  👥 Users: $($savedResources.Users.Count)" -ForegroundColor Yellow
     Write-Host "  📁 Groups: $($savedResources.Groups.Count)" -ForegroundColor Yellow
     Write-Host "  🔧 Applications: $($savedResources.Applications.Count)" -ForegroundColor Yellow
+    Write-Host "  🔐 App Role Assignments: $($savedResources.AppRoleAssignments.Count)" -ForegroundColor Yellow
+    Write-Host "  👤 Guest Users: $($savedResources.GuestUsers.Count)" -ForegroundColor Yellow
   }
   catch {
     Write-Error "Failed to read created resources file: $($_.Exception.Message)"
@@ -382,12 +429,54 @@ function Remove-SampleData {
       $savedResources.Applications | ForEach-Object { Write-Host "  - $($_.displayName)" -ForegroundColor Gray }
     }
 
+    if ($savedResources.AppRoleAssignments) {
+      Write-Host "`n🔐 App Role Assignments ($($savedResources.AppRoleAssignments.Count)):" -ForegroundColor Yellow
+      $savedResources.AppRoleAssignments | ForEach-Object { Write-Host "  - $($_.userDisplayName) -> $($_.resourceDisplayName)" -ForegroundColor Gray }
+    }
+
+    if ($savedResources.GuestUsers) {
+      Write-Host "`n👤 Guest Users ($($savedResources.GuestUsers.Count)):" -ForegroundColor Yellow
+      $savedResources.GuestUsers | ForEach-Object { Write-Host "  - $($_.displayName) ($($_.userPrincipalName))" -ForegroundColor Gray }
+    }
+
     Write-Host "`nℹ️  To actually remove these resources, run: .\Create-SampleData.ps1 -CleanupOnly" -ForegroundColor Blue
     return
   }
 
-  $successCount = @{ Users = 0; Groups = 0; Applications = 0 }
-  $errorCount = @{ Users = 0; Groups = 0; Applications = 0 }
+  $successCount = @{ Users = 0; Groups = 0; Applications = 0; AppRoleAssignments = 0; GuestUsers = 0 }
+  $errorCount = @{ Users = 0; Groups = 0; Applications = 0; AppRoleAssignments = 0; GuestUsers = 0 }
+
+  # Remove guest users first (they might have app role assignments)
+  if ($savedResources.GuestUsers) {
+    Write-Host "`n🗑️  Removing guest users..." -ForegroundColor Cyan
+    foreach ($guestUser in $savedResources.GuestUsers) {
+      try {
+        Write-Host "  Removing guest user: $($guestUser.displayName) (ID: $($guestUser.id))" -ForegroundColor Gray
+        Invoke-GraphApiRequest -Uri "$graphApiUri/users/$($guestUser.id)" -Headers $authHeaders -Method DELETE
+        $successCount.GuestUsers++
+      }
+      catch {
+        Write-Warning "Failed to remove guest user $($guestUser.displayName): $($_.Exception.Message)"
+        $errorCount.GuestUsers++
+      }
+    }
+  }
+
+  # Remove app role assignments first (dependencies)
+  if ($savedResources.AppRoleAssignments) {
+    Write-Host "`n🗑️  Removing app role assignments..." -ForegroundColor Cyan
+    foreach ($assignment in $savedResources.AppRoleAssignments) {
+      try {
+        Write-Host "  Removing assignment: $($assignment.userDisplayName) -> $($assignment.resourceDisplayName)" -ForegroundColor Gray
+        Invoke-GraphApiRequest -Uri "$graphApiUri/users/$($assignment.principalId)/appRoleAssignments/$($assignment.id)" -Headers $authHeaders -Method DELETE
+        $successCount.AppRoleAssignments++
+      }
+      catch {
+        Write-Warning "Failed to remove app role assignment for $($assignment.userDisplayName): $($_.Exception.Message)"
+        $errorCount.AppRoleAssignments++
+      }
+    }
+  }
 
   # Remove users
   if ($savedResources.Users) {
@@ -438,7 +527,7 @@ function Remove-SampleData {
   }
 
   # Remove the tracking file if cleanup was successful
-  $totalErrors = $errorCount.Users + $errorCount.Groups + $errorCount.Applications
+  $totalErrors = $errorCount.Users + $errorCount.Groups + $errorCount.Applications + $errorCount.AppRoleAssignments + $errorCount.GuestUsers
   if ($totalErrors -eq 0) {
     Remove-Item $createdResourcesFile -Force
     Write-Host "`n✅ Cleanup completed successfully! Removed tracking file." -ForegroundColor Green
@@ -451,6 +540,8 @@ function Remove-SampleData {
   Write-Host "  👥 Users: $($successCount.Users) removed, $($errorCount.Users) errors" -ForegroundColor $(if ($errorCount.Users -eq 0) { "Green" } else { "Yellow" })
   Write-Host "  📁 Groups: $($successCount.Groups) removed, $($errorCount.Groups) errors" -ForegroundColor $(if ($errorCount.Groups -eq 0) { "Green" } else { "Yellow" })
   Write-Host "  🔧 Applications: $($successCount.Applications) removed, $($errorCount.Applications) errors" -ForegroundColor $(if ($errorCount.Applications -eq 0) { "Green" } else { "Yellow" })
+  Write-Host "  🔐 App Role Assignments: $($successCount.AppRoleAssignments) removed, $($errorCount.AppRoleAssignments) errors" -ForegroundColor $(if ($errorCount.AppRoleAssignments -eq 0) { "Green" } else { "Yellow" })
+  Write-Host "  👤 Guest Users: $($successCount.GuestUsers) removed, $($errorCount.GuestUsers) errors" -ForegroundColor $(if ($errorCount.GuestUsers -eq 0) { "Green" } else { "Yellow" })
 }
 
 # Function to save created resources to JSON file
@@ -485,9 +576,11 @@ if ($DemoMode) {
 }
 
 $createdResources = @{
-  Users        = @()
-  Groups       = @()
-  Applications = @()
+  Users              = @()
+  Groups             = @()
+  Applications       = @()
+  AppRoleAssignments = @()
+  GuestUsers         = @()
 }
 
 # Create Users
@@ -508,7 +601,7 @@ if (-not $SkipUsers) {
         mailNickname      = $user.mailNickname
         jobTitle          = $user.jobTitle
         department        = $user.department
-        companyName       = $user.companyName
+        companyName       = "Demo Company"
         usageLocation     = $user.usageLocation
         accountEnabled    = $true
         passwordProfile   = @{
@@ -818,8 +911,333 @@ if (-not $SkipUsers -and -not $SkipGroups -and $createdResources.Users.Count -gt
   }
 }
 
+# Create App Role Assignments
+if (-not $SkipUsers -and -not $SkipApplications -and -not $SkipAppRoleAssignments -and $createdResources.Users.Count -gt 0 -and $createdResources.Applications.Count -gt 0) {
+  Write-Host "`n🔐 Creating App Role Assignments..." -ForegroundColor Cyan
+
+  # Wait for applications to be fully created
+  Write-Host "Waiting 15 seconds for applications to be fully provisioned..." -ForegroundColor Yellow
+  Start-Sleep -Seconds 15
+
+  # First, we need to create service principals for the applications
+  Write-Host "Creating service principals for applications..." -ForegroundColor Cyan
+  $servicePrincipals = @()
+
+  foreach ($app in $createdResources.Applications) {
+    try {
+      # Check if service principal already exists
+      $existingSp = $null
+      try {
+        $existingSp = Invoke-GraphApiRequest -Uri "$graphApiUri/servicePrincipals?`$filter=appId eq '$($app.appId)'" -Headers $authHeaders -Method GET
+      }
+      catch {
+        # Service principal doesn't exist, we'll create it
+      }
+
+      if ($existingSp -and $existingSp.value -and $existingSp.value.Count -gt 0) {
+        $servicePrincipals += $existingSp.value[0]
+        Write-Host "  ✅ Service principal already exists for: $($app.displayName)" -ForegroundColor Green
+      }
+      else {
+        # Create service principal
+        $spBody = @{
+          appId       = $app.appId
+          displayName = $app.displayName
+          tags        = @("WindowsAzureActiveDirectoryIntegratedApp")
+        }
+
+        $sp = Invoke-GraphApiRequest -Uri "$graphApiUri/servicePrincipals" -Headers $authHeaders -Method POST -Body $spBody
+        $servicePrincipals += $sp
+        Write-Host "  ✅ Created service principal for: $($app.displayName)" -ForegroundColor Green
+      }
+    }
+    catch {
+      Write-Warning "Failed to create service principal for $($app.displayName): $($_.Exception.Message)"
+    }
+  }
+
+  # Now create app role assignments
+  # We'll assign users to applications based on their departments and job roles
+  $assignmentPatterns = @(
+    @{
+      appPattern  = "Customer Portal"
+      departments = @("Sales", "Marketing", "Customer Service")
+      roleType    = "User"
+    },
+    @{
+      appPattern  = "Admin Dashboard"
+      departments = @("IT Support", "Security", "Operations")
+      roleType    = "Admin"
+    },
+    @{
+      appPattern  = "API Gateway"
+      departments = @("Engineering", "IT Support")
+      roleType    = "User"
+    },
+    @{
+      appPattern  = "Mobile App"
+      departments = @("Sales", "Marketing", "Customer Service", "Engineering")
+      roleType    = "User"
+    },
+    @{
+      appPattern  = "Monitoring Tool"
+      departments = @("IT Support", "Operations", "Security")
+      roleType    = "Admin"
+    }
+  )
+
+  foreach ($pattern in $assignmentPatterns) {
+    # Find matching applications
+    $matchingApps = $createdResources.Applications | Where-Object { $_.displayName -like "*$($pattern.appPattern)*" }
+    $matchingServicePrincipals = $servicePrincipals | Where-Object { $_.displayName -like "*$($pattern.appPattern)*" }
+
+    if ($matchingApps -and $matchingServicePrincipals) {
+      # Get users from matching departments
+      $eligibleUsers = $createdResources.Users | Where-Object { $_.department -in $pattern.departments }
+
+      foreach ($app in $matchingApps) {
+        $sp = $matchingServicePrincipals | Where-Object { $_.appId -eq $app.appId }
+
+        if ($sp -and $eligibleUsers) {
+          # Assign a subset of eligible users (to avoid overwhelming the demo)
+          $usersToAssign = $eligibleUsers | Get-Random -Count ([Math]::Min(5, $eligibleUsers.Count))
+
+          foreach ($user in $usersToAssign) {
+            try {
+              # Create app role assignment
+              $assignmentBody = @{
+                principalId = $user.id
+                resourceId  = $sp.id
+                appRoleId   = "00000000-0000-0000-0000-000000000000"  # Default role
+              }
+
+              $assignment = Invoke-GraphApiRequest -Uri "$graphApiUri/users/$($user.id)/appRoleAssignments" -Headers $authHeaders -Method POST -Body $assignmentBody
+
+              # Store assignment info for cleanup
+              $assignmentInfo = @{
+                id                  = $assignment.id
+                principalId         = $user.id
+                resourceId          = $sp.id
+                appRoleId           = $assignment.appRoleId
+                userDisplayName     = $user.displayName
+                resourceDisplayName = $sp.displayName
+                appId               = $app.appId
+              }
+
+              $createdResources.AppRoleAssignments += $assignmentInfo
+              Write-Host "  ✅ Assigned $($user.displayName) to $($sp.displayName)" -ForegroundColor Green
+            }
+            catch {
+              Write-Warning "Failed to assign $($user.displayName) to $($sp.displayName): $($_.Exception.Message)"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  # Create some additional random assignments for more demo data
+  Write-Host "Creating additional random app role assignments..." -ForegroundColor Cyan
+
+  # Get all service principals we created
+  $availableServicePrincipals = $servicePrincipals | Where-Object { $_ -ne $null }
+  $availableUsers = $createdResources.Users | Get-Random -Count 20  # Random subset of users
+
+  foreach ($sp in $availableServicePrincipals) {
+    # Assign 2-3 random users to each service principal
+    $randomUsers = $availableUsers | Get-Random -Count (Get-Random -Minimum 2 -Maximum 4)
+
+    foreach ($user in $randomUsers) {
+      try {
+        # Skip if already assigned
+        $existingAssignment = $createdResources.AppRoleAssignments | Where-Object {
+          $_.principalId -eq $user.id -and $_.resourceId -eq $sp.id
+        }
+
+        if (-not $existingAssignment) {
+          $assignmentBody = @{
+            principalId = $user.id
+            resourceId  = $sp.id
+            appRoleId   = "00000000-0000-0000-0000-000000000000"
+          }
+
+          $assignment = Invoke-GraphApiRequest -Uri "$graphApiUri/users/$($user.id)/appRoleAssignments" -Headers $authHeaders -Method POST -Body $assignmentBody
+
+          $assignmentInfo = @{
+            id                  = $assignment.id
+            principalId         = $user.id
+            resourceId          = $sp.id
+            appRoleId           = $assignment.appRoleId
+            userDisplayName     = $user.displayName
+            resourceDisplayName = $sp.displayName
+            appId               = $assignment.appId
+          }
+
+          $createdResources.AppRoleAssignments += $assignmentInfo
+          Write-Host "  ✅ Random assignment: $($user.displayName) to $($sp.displayName)" -ForegroundColor Green
+        }
+      }
+      catch {
+        # Silently skip random assignment failures to avoid noise
+        if ($DemoMode) {
+          Write-Warning "Failed random assignment: $($user.displayName) to $($sp.displayName): $($_.Exception.Message)"
+        }
+      }
+    }
+  }
+}
+
+# Create Guest Users
+if (-not $SkipGuestUsers) {
+  Write-Host "`n👤 Creating Guest Users..." -ForegroundColor Cyan
+
+  if ($UseBatch) {
+    # Create batch requests for guest users
+    $guestRequests = @()
+    for ($i = 0; $i -lt $sampleGuestUsers.Count; $i++) {
+      $guest = $sampleGuestUsers[$i]
+
+      $guestBody = @{
+        invitedUserEmailAddress = $guest.invitedUserEmailAddress
+        invitedUserDisplayName  = $guest.invitedUserDisplayName
+        inviteRedirectUrl       = $guest.inviteRedirectUrl
+        invitedUserType         = $guest.invitedUserType
+        sendInvitationMessage   = $guest.sendInvitationMessage
+        invitedUserMessageInfo  = $guest.invitedUserMessageInfo
+      }
+
+      $guestRequests += @{
+        id      = "guest-$i"
+        method  = "POST"
+        url     = "/invitations"
+        body    = $guestBody
+        headers = @{ "Content-Type" = "application/json" }
+      }
+    }
+
+    $responses = Invoke-GraphBatchRequest -Requests $guestRequests -Headers $authHeaders
+
+    foreach ($response in $responses) {
+      if ($response.status -eq 201) {
+        # Get the created user from the invitation response
+        $invitedUser = $response.body.invitedUser
+
+        # Add additional properties that were in our sample data
+        $guestIndex = [int]($response.id -replace "guest-", "")
+        if ($guestIndex -lt $sampleGuestUsers.Count) {
+          $sampleGuest = $sampleGuestUsers[$guestIndex]
+
+          # Update the user with additional properties
+          try {
+            $updateBody = @{
+              companyName = $sampleGuest.companyName
+              jobTitle    = $sampleGuest.jobTitle
+              department  = $sampleGuest.department
+            }
+
+            Invoke-GraphApiRequest -Uri "$graphApiUri/users/$($invitedUser.id)" -Headers $authHeaders -Method PATCH -Body $updateBody
+
+            # Store the updated user info
+            $guestInfo = @{
+              id                = $invitedUser.id
+              userPrincipalName = $invitedUser.userPrincipalName
+              displayName       = $invitedUser.displayName
+              mail              = $invitedUser.mail
+              userType          = $invitedUser.userType
+              companyName       = $sampleGuest.companyName
+              jobTitle          = $sampleGuest.jobTitle
+              department        = $sampleGuest.department
+            }
+
+            $createdResources.GuestUsers += $guestInfo
+            Write-Host "    ✅ Created guest: $($invitedUser.displayName) ($($sampleGuest.companyName))" -ForegroundColor Green
+          }
+          catch {
+            Write-Warning "Failed to update guest user properties for $($invitedUser.displayName): $($_.Exception.Message)"
+            # Still add the basic guest info
+            $createdResources.GuestUsers += @{
+              id                = $invitedUser.id
+              userPrincipalName = $invitedUser.userPrincipalName
+              displayName       = $invitedUser.displayName
+              mail              = $invitedUser.mail
+              userType          = $invitedUser.userType
+            }
+          }
+        }
+      }
+      else {
+        $guestIndex = [int]($response.id -replace "guest-", "")
+        $guestEmail = if ($guestIndex -lt $sampleGuestUsers.Count) { $sampleGuestUsers[$guestIndex].invitedUserEmailAddress } else { "Unknown Guest" }
+        Write-Warning "Failed to create guest user $guestEmail (Status: $($response.status)): $($response.body.error.message)"
+      }
+    }
+  }
+  else {
+    # Sequential guest user creation
+    foreach ($guest in $sampleGuestUsers) {
+      try {
+        if ($DemoMode) {
+          Write-Host "  Creating guest user: $($guest.invitedUserDisplayName) ($($guest.invitedUserEmailAddress))" -ForegroundColor Yellow
+        }
+
+        $guestBody = @{
+          invitedUserEmailAddress = $guest.invitedUserEmailAddress
+          invitedUserDisplayName  = $guest.invitedUserDisplayName
+          inviteRedirectUrl       = $guest.inviteRedirectUrl
+          invitedUserType         = $guest.invitedUserType
+          sendInvitationMessage   = $guest.sendInvitationMessage
+          invitedUserMessageInfo  = $guest.invitedUserMessageInfo
+        }
+
+        $invitation = Invoke-GraphApiRequest -Uri "$graphApiUri/invitations" -Headers $authHeaders -Method POST -Body $guestBody
+        $invitedUser = $invitation.invitedUser
+
+        # Update the user with additional properties
+        try {
+          $updateBody = @{
+            companyName = $guest.companyName
+            jobTitle    = $guest.jobTitle
+            department  = $guest.department
+          }
+
+          Invoke-GraphApiRequest -Uri "$graphApiUri/users/$($invitedUser.id)" -Headers $authHeaders -Method PATCH -Body $updateBody
+
+          # Store the guest info
+          $guestInfo = @{
+            id                = $invitedUser.id
+            userPrincipalName = $invitedUser.userPrincipalName
+            displayName       = $invitedUser.displayName
+            mail              = $invitedUser.mail
+            userType          = $invitedUser.userType
+            companyName       = $guest.companyName
+            jobTitle          = $guest.jobTitle
+            department        = $guest.department
+          }
+
+          $createdResources.GuestUsers += $guestInfo
+          Write-Host "    ✅ Created guest: $($invitedUser.displayName) ($($guest.companyName))" -ForegroundColor Green
+        }
+        catch {
+          Write-Warning "Failed to update guest user properties for $($invitedUser.displayName): $($_.Exception.Message)"
+          # Still add the basic guest info
+          $createdResources.GuestUsers += @{
+            id                = $invitedUser.id
+            userPrincipalName = $invitedUser.userPrincipalName
+            displayName       = $invitedUser.displayName
+            mail              = $invitedUser.mail
+            userType          = $invitedUser.userType
+          }
+        }
+      }
+      catch {
+        Write-Warning "Failed to create guest user $($guest.invitedUserEmailAddress): $($_.Exception.Message)"
+      }
+    }
+  }
+}
+
 # Save created resources to JSON file for cleanup
-if ($createdResources.Users.Count -gt 0 -or $createdResources.Groups.Count -gt 0 -or $createdResources.Applications.Count -gt 0) {
+if ($createdResources.Users.Count -gt 0 -or $createdResources.Groups.Count -gt 0 -or $createdResources.Applications.Count -gt 0 -or $createdResources.AppRoleAssignments.Count -gt 0 -or $createdResources.GuestUsers.Count -gt 0) {
   Save-CreatedResources -Resources $createdResources
 }
 
@@ -832,6 +1250,8 @@ Write-Host "`n📊 Summary of Created Resources:" -ForegroundColor Cyan
 Write-Host "  👥 Users: $($createdResources.Users.Count)" -ForegroundColor Green
 Write-Host "  📁 Groups: $($createdResources.Groups.Count)" -ForegroundColor Green
 Write-Host "  🔧 Applications: $($createdResources.Applications.Count)" -ForegroundColor Green
+Write-Host "  🔐 App Role Assignments: $($createdResources.AppRoleAssignments.Count)" -ForegroundColor Green
+Write-Host "  👤 Guest Users: $($createdResources.GuestUsers.Count)" -ForegroundColor Green
 
 Write-Host "`n🔍 Sample Queries You Can Now Test:" -ForegroundColor Cyan
 Write-Host "  👥 USER QUERIES:" -ForegroundColor Yellow
@@ -841,6 +1261,13 @@ Write-Host "    • Users by location: /users?`$filter=usageLocation eq 'US'" -F
 Write-Host "    • Users with manager role: /users?`$filter=contains(jobTitle, 'Manager')" -ForegroundColor White
 Write-Host "    • Users in multiple departments: /users?`$filter=department in ('Engineering', 'IT Support')" -ForegroundColor White
 Write-Host "    • Users with pagination: /users?`$top=20&`$skip=0&`$orderby=displayName" -ForegroundColor White
+
+Write-Host "  👤 GUEST USER QUERIES:" -ForegroundColor Yellow
+Write-Host "    • All guest users: /users?`$filter=userType eq 'Guest'" -ForegroundColor White
+Write-Host "    • Guest users by company: /users?`$filter=userType eq 'Guest' and companyName eq 'Partner Corp'" -ForegroundColor White
+Write-Host "    • Guest users by external domain: /users?`$filter=userType eq 'Guest' and startswith(mail, 'partner1.com')" -ForegroundColor White
+Write-Host "    • Guest users created recently: /users?`$filter=userType eq 'Guest' and createdDateTime ge \$(Get-Date).AddDays(-1).ToString('yyyy-MM-ddTHH:mm:ssZ')" -ForegroundColor White
+Write-Host "    • Guest users with PendingAcceptance: /users?`$filter=userType eq 'Guest' and externalUserState eq 'PendingAcceptance'" -ForegroundColor White
 
 Write-Host "  📁 GROUP QUERIES:" -ForegroundColor Yellow
 Write-Host "    • Security groups: /groups?`$filter=securityEnabled eq true" -ForegroundColor White
@@ -856,20 +1283,30 @@ Write-Host "    • Web applications: /applications?`$filter=tags/any(t:t eq 'We
 Write-Host "    • Mobile applications: /applications?`$filter=tags/any(t:t eq 'Mobile')" -ForegroundColor White
 Write-Host "    • Demo applications: /applications?`$filter=startswith(displayName, 'Demo')" -ForegroundColor White
 
+Write-Host "  🔐 APP ROLE ASSIGNMENT QUERIES:" -ForegroundColor Yellow
+Write-Host "    • User's app assignments: /users/{user-id}/appRoleAssignments" -ForegroundColor White
+Write-Host "    • Service principal assignments: /servicePrincipals/{sp-id}/appRoleAssignedTo" -ForegroundColor White
+Write-Host "    • All app role assignments: /appRoleAssignments" -ForegroundColor White
+Write-Host "    • Filter by resource: /users/{user-id}/appRoleAssignments?`$filter=resourceId eq '{sp-id}'" -ForegroundColor White
+Write-Host "    • Assignment with details: /users/{user-id}/appRoleAssignments?`$expand=resource" -ForegroundColor White
+
 Write-Host "  🔍 ADVANCED QUERIES:" -ForegroundColor Yellow
 Write-Host "    • Complex user filter: /users?`$filter=department eq 'Engineering' and usageLocation eq 'US'&`$select=displayName,jobTitle,department" -ForegroundColor White
 Write-Host "    • Group member count: /groups?`$expand=members(`$count=true)&`$select=displayName,members" -ForegroundColor White
 Write-Host "    • Users created recently: /users?`$filter=createdDateTime ge \$(Get-Date).AddDays(-1).ToString('yyyy-MM-ddTHH:mm:ssZ')" -ForegroundColor White
+Write-Host "    • Mixed user types: /users?`$filter=userType in ('Member', 'Guest')&`$select=displayName,userType,companyName" -ForegroundColor White
 Write-Host "    • Batch request example: POST /`$batch with multiple queries" -ForegroundColor White
 
 Write-Host "`n⚠️  Important Notes:" -ForegroundColor Yellow
 Write-Host "  • All users have temporary passwords that must be changed on first login" -ForegroundColor Gray
+Write-Host "  • Guest users are created with invitations that may need to be accepted" -ForegroundColor Gray
 Write-Host "  • Run with -CleanupOnly to remove all sample data tracked in created-demo-resources.json" -ForegroundColor Gray
 Write-Host "  • Run with -WhatIf to preview what would be cleaned up without deleting" -ForegroundColor Gray
 Write-Host "  • Run with -UseBatch to use batch requests for faster resource creation" -ForegroundColor Gray
+Write-Host "  • Run with -SkipGuestUsers to skip creating guest users" -ForegroundColor Gray
 Write-Host "  • Created resources are saved to 'created-demo-resources.json' for precise cleanup" -ForegroundColor Gray
 Write-Host "  • Some queries may take a few minutes to return results after creation" -ForegroundColor Gray
 Write-Host "  • Batch requests can create up to 20 resources per request for improved performance" -ForegroundColor Gray
 
 Write-Host "`n🎯 Your Microsoft Graph API demos are now ready!" -ForegroundColor Green
-Write-Host "📁 Demo now includes: 75+ users, 60+ groups, 20+ applications" -ForegroundColor Cyan
+Write-Host "📁 Demo now includes: 75+ users, 60+ groups, 20+ applications, app role assignments, and guest users" -ForegroundColor Cyan
