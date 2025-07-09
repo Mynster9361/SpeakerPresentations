@@ -32,7 +32,7 @@
 
 # Tenant ID, Client ID, and Client Secret for the MS Graph API
 $tenantId = $env:tenantId
-$clientId = $env:clientId2
+$clientId = $env:clientId
 $clientSecret = $env:clientSecret
 
 # Default Token Body
@@ -48,16 +48,15 @@ $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tena
 
 # Setting up the authorization headers
 $authHeaders = @{
-    "Authorization" = "Bearer $($tokenResponse.access_token)"
-    "Content-type"  = "application/json"
+    "Authorization"    = "Bearer $($tokenResponse.access_token)"
+    "Content-type"     = "application/json"
+    "ConsistencyLevel" = "eventual"
 }
 # https://learn.microsoft.com/en-us/graph/api/group-get?view=graph-rest-1.0&tabs=http
 $uri = "https://graph.microsoft.com/v1.0/groups?`$search=`"displayName:Project`" OR `"mail:powershell-enthusiasts`""
-$authHeaders += @{ConsistencyLevel = "eventual" }
 $groups = Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
 $groups.value | Select-Object -ExcludeProperty id
 
 $uri = 'https://graph.microsoft.com/v1.0/groups?$search="description:Procurement" AND ("displayName:Procurement")&$count=true'
-$authHeaders += @{ConsistencyLevel = "eventual" }
 $groups = Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
 $groups.value | Select-Object -ExcludeProperty id

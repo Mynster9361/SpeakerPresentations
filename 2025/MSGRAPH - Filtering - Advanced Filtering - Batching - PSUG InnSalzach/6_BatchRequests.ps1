@@ -113,19 +113,29 @@ foreach ($report in $directReports.directReports) {
                 url    = "/users/$($report.id)/MemberOf"
             },
             @{
-                id     = "2"
-                method = "GET"
-                url    = "/users/$($report.id)/appRoleAssignments"
+                id        = "2"
+                method    = "GET"
+                url       = "/users/$($report.id)/appRoleAssignments"
+                dependsOn = @("1")
             },
             @{
-                id     = "3"
-                method = "GET"
-                url    = "/users/$($report.id)/oauth2PermissionGrants"
+                id        = "3"
+                method    = "GET"
+                url       = "/users/$($report.id)/oauth2PermissionGrants"
+                dependsOn = @("1")
             }
         )
     }
 
     # Make the batch request
-    $batchRequest1 = Invoke-RestMethod -Method POST -Uri $uri -Headers $authHeaders -Body ($body | ConvertTo-Json)
+    $batchRequest1 = Invoke-RestMethod -Method POST -Uri $uri -Headers $authHeaders -Body ($body | ConvertTo-Json -Depth 6)
 
+    # output the results of the batch request
+    Write-Output "Batch request response for $($report.displayName):"
+    $batchRequest1.responses | ForEach-Object {
+        Write-Output "Response ID: $($_.id)"
+        Write-Output "Status: $($_.status)"
+        Write-Output "Body: $($_.body | ConvertTo-Json -Depth 6)"
+        Write-Output "----------------------------------------"
+    }
 }

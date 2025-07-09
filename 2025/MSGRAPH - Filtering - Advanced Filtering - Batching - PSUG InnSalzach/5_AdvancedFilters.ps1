@@ -33,7 +33,7 @@
 
 # Tenant ID, Client ID, and Client Secret for the MS Graph API
 $tenantId = $env:tenantId
-$clientId = $env:clientId2
+$clientId = $env:clientId
 $clientSecret = $env:clientSecret
 
 # Default Token Body
