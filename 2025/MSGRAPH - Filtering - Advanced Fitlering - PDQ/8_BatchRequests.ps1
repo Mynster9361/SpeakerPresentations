@@ -51,7 +51,7 @@ $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tena
 # Setting up the authorization headers
 $authHeaders = @{
     "Authorization" = "Bearer $($tokenResponse.access_token)"
-    "Content-type" = "application/json"
+    "Content-type"  = "application/json"
 }
 
 # URI for the batch endpoint
@@ -62,19 +62,19 @@ $uri = "https://graph.microsoft.com/v1.0/`$batch"
 $body = @{
     requests = @(
         @{
-            id = "1"
+            id     = "1"
             method = "GET"
-            url = "/users/$userId/manager?`$select=id,displayName,jobTitle"
+            url    = "/users/$userId/manager?`$select=id,displayName,jobTitle"
         },
         @{
-            id = "2"
+            id     = "2"
             method = "GET"
-            url = "/users/$userId/appRoleAssignments"
+            url    = "/users/$userId/appRoleAssignments"
         },
         @{
-            id = "3"
+            id     = "3"
             method = "GET"
-            url = "/users/$userId/oauth2PermissionGrants"
+            url    = "/users/$userId/oauth2PermissionGrants"
         }
     )
 }
@@ -92,7 +92,7 @@ $batchRequest.responses | ForEach-Object {
 }
 
 # Display each individual response
-$batchRequest.responses | Where-Object { $_.id -eq "1" } | Select-Object -ExpandProperty body | Select-Object id,displayName,jobTitle
+$batchRequest.responses | Where-Object { $_.id -eq "1" } | Select-Object -ExpandProperty body | Select-Object id, displayName, jobTitle
 $($batchRequest.responses | Where-Object { $_.id -eq "2" } | Select-Object -ExpandProperty body).value
 $($batchRequest.responses | Where-Object { $_.id -eq "3" } | Select-Object -ExpandProperty body).value
 
@@ -108,19 +108,19 @@ foreach ($report in $directReports.value.directReports) {
     $body = @{
         requests = @(
             @{
-                id = "1"
+                id     = "1"
                 method = "GET"
-                url = "/users/$($report.id)/MemberOf"
+                url    = "/users/$($report.id)/MemberOf"
             },
             @{
-                id = "2"
+                id     = "2"
                 method = "GET"
-                url = "/users/$($report.id)/appRoleAssignments"
+                url    = "/users/$($report.id)/appRoleAssignments"
             },
             @{
-                id = "3"
+                id     = "3"
                 method = "GET"
-                url = "/users/$($report.id)/oauth2PermissionGrants"
+                url    = "/users/$($report.id)/oauth2PermissionGrants"
             }
         )
     }

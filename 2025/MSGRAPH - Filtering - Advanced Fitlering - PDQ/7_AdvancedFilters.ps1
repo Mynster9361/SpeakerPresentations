@@ -49,8 +49,8 @@ $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tena
 
 # Setting up the authorization headers
 $authHeaders = @{
-    "Authorization" = "Bearer $($tokenResponse.access_token)"
-    "Content-type" = "application/json"
+    "Authorization"    = "Bearer $($tokenResponse.access_token)"
+    "Content-type"     = "application/json"
     "ConsistencyLevel" = "eventual" # This header is needed when using advanced filters in Microsoft Graph
 }
 # Graph API BASE URI
@@ -61,7 +61,7 @@ $graphApiUri = "https://graph.microsoft.com/v1.0"
 # Example filter: Retrieve applications with redirect URIs starting with 'http://localhost'
 $uri = "$graphApiUri/applications?`$filter=web/redirectUris/any(p:startswith(p, 'http://localhost'))&`$count=true"
 $groupsWithLocalHostUrl = Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
-$groupsWithLocalHostUrl.value | select-object displayname, @{Name="redirectUris"; Expression={$_.web.redirectUris}}
+$groupsWithLocalHostUrl.value | Select-Object displayname, @{Name = "redirectUris"; Expression = { $_.web.redirectUris } }
 
 
 # Example filter: Retrieve applications with redirect URIs that does NOT start with 'http://localhost'

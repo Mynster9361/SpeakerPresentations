@@ -835,7 +835,7 @@ if (-not $SkipApplications) {
 
 # Create Group Memberships
 if (-not $SkipUsers -and -not $SkipGroups -and $createdResources.Users.Count -gt 0 -and $createdResources.Groups.Count -gt 0) {
-  write-Host "Waiting 20 seconds for group and user creation to be in place" -ForegroundColor Cyan
+  Write-Host "Waiting 20 seconds for group and user creation to be in place" -ForegroundColor Cyan
   Start-Sleep -Seconds 20
   Write-Host "`n🔗 Creating Group Memberships..." -ForegroundColor Cyan
 

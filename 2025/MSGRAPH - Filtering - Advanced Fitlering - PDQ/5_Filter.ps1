@@ -50,7 +50,7 @@ $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tena
 # Setting up the authorization headers
 $authHeaders = @{
     "Authorization" = "Bearer $($tokenResponse.access_token)"
-    "Content-type" = "application/json"
+    "Content-type"  = "application/json"
 }
 
 # More examples of filters can be found here:
@@ -67,7 +67,7 @@ $usersStartWith.value | Select-Object -ExcludeProperty userPrincipalName, id
 $date = (Get-Date).AddMonths(3).ToString("yyyy-MM-ddT00:00:00.000Z")
 $uri = "https://graph.microsoft.com/v1.0/users?`$filter=userType eq 'Guest' AND externalUserState eq 'PendingAcceptance' AND createdDateTime le $date&`$expand=memberOf"
 $guestUsers = Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
-$guestUsers.value | Select-Object -ExcludeProperty userPrincipalName, id,mail
+$guestUsers.value | Select-Object -ExcludeProperty userPrincipalName, id, mail
 
 $uri = "https://graph.microsoft.com/v1.0/groups?`$filter=(mailEnabled eq false and securityEnabled eq true)"
 $groups = Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
@@ -76,4 +76,4 @@ $groups.value | Select-Object -ExcludeProperty id
 
 $uri = "https://graph.microsoft.com/v1.0/servicePrincipals?`$count=true&`$select=displayName,appId,id,preferredSingleSignOnMode,publisherName,homepage,appOwnerOrganizationId,accountEnabled,tags,applicationTemplateId,servicePrincipalType,createdDateTime,keyCredentials,servicePrincipalNames,preferredTokenSigningKeyThumbprint&`$search=""displayName:PDQ""&`$filter=tags/any(x:x eq 'WindowsAzureActiveDirectoryIntegratedApp') and accountEnabled eq true"
 $servicePrincipals = Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
-$servicePrincipals.value | Select-Object -ExcludeProperty id,appId,servicePrincipalNames
+$servicePrincipals.value | Select-Object -ExcludeProperty id, appId, servicePrincipalNames

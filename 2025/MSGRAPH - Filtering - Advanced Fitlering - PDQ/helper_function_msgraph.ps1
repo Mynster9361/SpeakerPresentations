@@ -222,4 +222,3 @@ function Invoke-GraphApiRequest {
         return $allResults
     }
 }
-

@@ -15,7 +15,7 @@ $whatsNew = "https://mynster9361.github.io/posts/ActionableMessagesModuleWhatsNe
 
 # Set the path to the Adaptive Card Designer
 
-$jsonCard = get-content "Adaptive Cards in Outlook Sent from PowerShell/card.json" -Raw
+$jsonCard = Get-Content "Adaptive Cards in Outlook Sent from PowerShell/card.json" -Raw
 
 $card = ConvertFrom-AMJson -Json $jsonCard
 $card
@@ -97,29 +97,29 @@ $togglevisibility_ViewConversationHistory = New-AMToggleVisibilityAction -Title 
 $actionset_ViewConversationHistoryWrapper = New-AMActionSet -Id "ViewConversationHistoryWrapper" -Actions @($togglevisibility_ViewConversationHistory)
 Add-AMElement -Card $card -Element $actionset_ViewConversationHistoryWrapper -ContainerId "f30f6dab-8ddb-877b-001c-d350c0a03a53"
 $detailCard = @{
-  'type' = 'AdaptiveCard'
-  'body' = @(
-    @{
-      'type'        = "Input.Text"
-      'id'          = "message"
-      'placeholder' = "Type your reply here"
-      'isMultiline' = $true
-    },
-    @{
-      'type'    = "ActionSet"
-      'id'      = "b86df692-99d9-8952-c1a7-d0cd0074934f"
-      'actions' = @(
+    'type' = 'AdaptiveCard'
+    'body' = @(
         @{
-          'type'   = "Action.Http"
-          'id'     = "3ae59121-cb90-1205-c5d0-77646ffe183b"
-          'title'  = "Submit"
-          'method' = "POST"
-          'url'    = "https://www.microsoft.com"
-          'body'   = "{Message: {{message.value}}}"
+            'type'        = "Input.Text"
+            'id'          = "message"
+            'placeholder' = "Type your reply here"
+            'isMultiline' = $true
+        },
+        @{
+            'type'    = "ActionSet"
+            'id'      = "b86df692-99d9-8952-c1a7-d0cd0074934f"
+            'actions' = @(
+                @{
+                    'type'   = "Action.Http"
+                    'id'     = "3ae59121-cb90-1205-c5d0-77646ffe183b"
+                    'title'  = "Submit"
+                    'method' = "POST"
+                    'url'    = "https://www.microsoft.com"
+                    'body'   = "{Message: {{message.value}}}"
+                }
+            )
         }
-      )
-    }
-  )
+    )
 }
 $showcard_caf22b50_33d3_2ea5_1b34_bcca0838bb33 = New-AMShowCardAction -Title "Reply to conversation" -Id "caf22b50-33d3-2ea5-1b34-bcca0838bb33" -Card $detailCard
 $togglevisibility_11 = New-AMToggleVisibilityAction -Title "Go to conversation" -TargetElements @("ActionsWrapper", "ConversationWrapper", "ViewConversationHistoryWrapper")
@@ -149,7 +149,7 @@ Invoke-MgGraphRequest -Method POST -Uri "https://graph.microsoft.com/v1.0/me/sen
 
 
 
-$jsonCard = get-content "Adaptive Cards in Outlook Sent from PowerShell/card2.json" -Raw
+$jsonCard = Get-Content "Adaptive Cards in Outlook Sent from PowerShell/card2.json" -Raw
 
 $card = ConvertFrom-AMJson -Json $jsonCard
 $card
@@ -231,29 +231,29 @@ $togglevisibility_ViewConversationHistory = New-AMToggleVisibilityAction -Title 
 $actionset_ViewConversationHistoryWrapper = New-AMActionSet -Id "ViewConversationHistoryWrapper" -Actions @($togglevisibility_ViewConversationHistory)
 Add-AMElement -Card $card -Element $actionset_ViewConversationHistoryWrapper -ContainerId "f30f6dab-8ddb-877b-001c-d350c0a03a53"
 $detailCard = @{
-  'type' = 'AdaptiveCard'
-  'body' = @(
-    @{
-      'type'        = "Input.Text"
-      'id'          = "message"
-      'placeholder' = "Type your reply here"
-      'isMultiline' = $true
-    },
-    @{
-      'type'    = "ActionSet"
-      'id'      = "b86df692-99d9-8952-c1a7-d0cd0074934f"
-      'actions' = @(
+    'type' = 'AdaptiveCard'
+    'body' = @(
         @{
-          'type'   = "Action.Http"
-          'id'     = "3ae59121-cb90-1205-c5d0-77646ffe183b"
-          'title'  = "Submit"
-          'method' = "POST"
-          'url'    = "https://www.microsoft.com"
-          'body'   = "{Message: {{message.value}}}"
+            'type'        = "Input.Text"
+            'id'          = "message"
+            'placeholder' = "Type your reply here"
+            'isMultiline' = $true
+        },
+        @{
+            'type'    = "ActionSet"
+            'id'      = "b86df692-99d9-8952-c1a7-d0cd0074934f"
+            'actions' = @(
+                @{
+                    'type'   = "Action.Http"
+                    'id'     = "3ae59121-cb90-1205-c5d0-77646ffe183b"
+                    'title'  = "Submit"
+                    'method' = "POST"
+                    'url'    = "https://www.microsoft.com"
+                    'body'   = "{Message: {{message.value}}}"
+                }
+            )
         }
-      )
-    }
-  )
+    )
 }
 $showcard_caf22b50_33d3_2ea5_1b34_bcca0838bb33 = New-AMShowCardAction -Title "Reply to conversation" -Id "caf22b50-33d3-2ea5-1b34-bcca0838bb33" -Card $detailCard
 $togglevisibility_11 = New-AMToggleVisibilityAction -Title "Go to conversation" -TargetElements @("ActionsWrapper", "ConversationWrapper", "ViewConversationHistoryWrapper")

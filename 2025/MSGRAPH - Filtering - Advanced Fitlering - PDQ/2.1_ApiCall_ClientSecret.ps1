@@ -57,7 +57,7 @@ $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tena
 # Setting up the authorization headers
 $authHeaders = @{
     "Authorization" = "Bearer $($tokenResponse.access_token)"
-    "Content-type" = "application/json"
+    "Content-type"  = "application/json"
 }
 
 # Make an API call to retrieve the user's app role assignments

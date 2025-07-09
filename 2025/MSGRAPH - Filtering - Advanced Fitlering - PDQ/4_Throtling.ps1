@@ -50,7 +50,7 @@ $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tena
 # Setting up the authorization headers
 $authHeaders = @{
     "Authorization" = "Bearer $($tokenResponse.access_token)"
-    "Content-type" = "application/json"
+    "Content-type"  = "application/json"
 }
 
 # URI for the /subscriptions endpoint
@@ -60,7 +60,7 @@ $uri = "https://graph.microsoft.com/v1.0/subscriptions"
 # The error message will contain a Retry-After header with the number of seconds to wait before making another request
 $counter = 0
 do {
-    write-output $counter
+    Write-Output $counter
     try {
         Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
         $counter++

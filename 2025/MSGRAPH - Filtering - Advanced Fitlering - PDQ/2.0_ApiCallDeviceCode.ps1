@@ -35,8 +35,8 @@ $clientId = $env:clientId1
 
 # Request device code
 $response = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/devicecode" -Method POST -Body @{
-    client_id     = $clientId
-    scope         = "user.read"
+    client_id = $clientId
+    scope     = "user.read"
 }
 
 # Extract device code, user code and verification uri
@@ -52,16 +52,16 @@ Pause "Press Enter to continue..."
 
 # Once the user has authenticated, request a token
 $tokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token" -Method POST -Body @{
-    client_id     = $clientId
-    scope         = "https://graph.microsoft.com/.default"
-    grant_type    = "urn:ietf:params:oauth:grant-type:device_code"
-    device_code   = $deviceCode
+    client_id   = $clientId
+    scope       = "https://graph.microsoft.com/.default"
+    grant_type  = "urn:ietf:params:oauth:grant-type:device_code"
+    device_code = $deviceCode
 }
 
 # Setting up the authorization headers
 $authHeaders = @{
     "Authorization" = "Bearer $($tokenResponse.access_token)"
-    "Content-type" = "application/json"
+    "Content-type"  = "application/json"
 }
 
 # Make an API call to retrieve the user's app role assignments

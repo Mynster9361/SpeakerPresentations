@@ -83,11 +83,11 @@ $JWT = $JWT + "." + $Signature
 
 # Request a token
 $token = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token" -Method POST -Body @{
-    client_id     = $clientId
-    scope         = "https://graph.microsoft.com/.default"
+    client_id             = $clientId
+    scope                 = "https://graph.microsoft.com/.default"
     client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-    client_assertion = $JWT
-    grant_type    = "client_credentials"
+    client_assertion      = $JWT
+    grant_type            = "client_credentials"
 }
 
 # Output the token

@@ -60,7 +60,7 @@ $uri = "https://graph.microsoft.com/v1.0/subscriptions"
 # The error message will contain a Retry-After header with the number of seconds to wait before making another request
 $counter = 0
 do {
-    write-output $counter
+    Write-Output $counter
     try {
         Invoke-RestMethod -Method Get -Uri $uri -Headers $authHeaders
         $counter++

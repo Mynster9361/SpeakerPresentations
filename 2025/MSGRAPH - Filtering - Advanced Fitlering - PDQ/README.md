@@ -4,19 +4,23 @@ This repository contains a series of PowerShell scripts that demonstrate how to 
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Samples](#samples)
-  - [1.0_AuthDeviceCode.ps1](#10_authdevicecodeps1)
-  - [1.1_AuthSecret.ps1](#11_authsecretps1)
-  - [1.2_AuthCertificate.ps1](#12_authcertificateps1)
-  - [2.0_ApiCallDeviceCode.ps1](#20_apicalldevicecodeps1)
-  - [2.1_ApiCall_ClientSecret.ps1](#21_apicall_clientsecretps1)
-  - [3_NextPage.ps1](#3_nextpageps1)
-  - [4_Throtling.ps1](#4_throtlingps1)
-  - [5_Filter.ps1](#5_filterps1)
-  - [6_Search.ps1](#6_searchps1)
-  - [7_AdvancedFilters.ps1](#7_advancedfiltersps1)
-  - [8_BatchRequests.ps1](#8_batchrequestsps1)
+- [Microsoft Graph API PowerShell Samples](#microsoft-graph-api-powershell-samples)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Samples](#samples)
+    - [1.0\_AuthDeviceCode.ps1](#10_authdevicecodeps1)
+    - [1.1\_AuthSecret.ps1](#11_authsecretps1)
+    - [1.2\_AuthCertificate.ps1](#12_authcertificateps1)
+    - [2.0\_ApiCallDeviceCode.ps1](#20_apicalldevicecodeps1)
+    - [2.1\_ApiCall\_ClientSecret.ps1](#21_apicall_clientsecretps1)
+    - [3\_NextPage.ps1](#3_nextpageps1)
+    - [4\_Throtling.ps1](#4_throtlingps1)
+    - [5\_Filter.ps1](#5_filterps1)
+    - [6\_Search.ps1](#6_searchps1)
+    - [7\_AdvancedFilters.ps1](#7_advancedfiltersps1)
+    - [8\_BatchRequests.ps1](#8_batchrequestsps1)
+  - [Getting Started](#getting-started)
+  - [Contributing](#contributing)
 
 ## Introduction
 
