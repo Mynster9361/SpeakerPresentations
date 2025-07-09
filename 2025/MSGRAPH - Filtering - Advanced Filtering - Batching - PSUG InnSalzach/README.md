@@ -6,11 +6,6 @@
   <div style="flex: 1; min-width: 250px;">
     Hello there! I'm **Morten Mynster**, an automation enthusiast, coder, and proud family man. My IT journey began back in 2017, and since then, I've been on a mission to simplify the complex through scripting and automation. Whether it's crafting workflows, managing systems, or experimenting with new technologies, I thrive on turning challenges into opportunities for innovation.
   </div>
-  <div style="flex: 0 0 auto; margin-left: 20px;">
-    <a href="/" id="avatar" class="rounded-circle">
-      <img src="https://mynster9361.github.io/assets/img/posts/me.png" alt="Morten Mynster" style="border-radius: 50%; max-width: 100px; height: auto;">
-    </a>
-  </div>
 </div>
 
 When I'm not writing code or tinkering in my homelab, I'm spending time with my amazing wife, our two kids, and our Disney-inspired dog, Mushu (yes, like the dragon from *Mulan*). Outside of work, you'll find me gaming, exploring new ideas, or enjoying quality time with my family.
