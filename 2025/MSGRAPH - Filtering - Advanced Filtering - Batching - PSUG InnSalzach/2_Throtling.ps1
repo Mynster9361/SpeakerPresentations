@@ -26,7 +26,7 @@
     $env:clientSecret = "your-client-secret"
 
     # Run the script
-    .\4_Throtling.ps1
+    .\2_Throtling.ps1
 
     # The script will make repeated API calls and handle throttling responses.
 #>

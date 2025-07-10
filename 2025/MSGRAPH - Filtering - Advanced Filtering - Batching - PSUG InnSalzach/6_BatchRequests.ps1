@@ -26,7 +26,7 @@
     $env:clientSecret = "your-client-secret"
 
     # Run the script
-    .\8_BatchRequests.ps1
+    .\6_BatchRequests.ps1
 
     # The script will output the results of the batch requests.
 #>

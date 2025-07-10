@@ -33,7 +33,7 @@
     $env:userId = "user-id"
 
     # Run the script
-    .\3_NextPage.ps1
+    .\1_NextPage.ps1
 
     # The script will output the user's app role assignments, handling pagination to retrieve all pages of data.
 #>

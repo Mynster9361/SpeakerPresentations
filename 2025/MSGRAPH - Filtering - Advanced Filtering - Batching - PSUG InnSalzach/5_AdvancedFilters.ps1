@@ -26,7 +26,7 @@
     $env:clientSecret = "your-client-secret"
 
     # Run the script
-    .\7_AdvancedFilters.ps1
+    .\5_AdvancedFilters.ps1
 
     # The script will output the filtered data based on advanced filters.
 #>

@@ -25,7 +25,7 @@
     $env:clientSecret = "your-client-secret"
 
     # Run the script
-    .\6_Search.ps1
+    .\4_Search.ps1
 
     # The script will output the search results for users.
 #>

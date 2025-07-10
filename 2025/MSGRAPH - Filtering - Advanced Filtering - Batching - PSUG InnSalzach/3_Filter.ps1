@@ -26,7 +26,7 @@
     $env:clientSecret = "your-client-secret"
 
     # Run the script
-    .\5_Filter.ps1
+    .\3_Filter.ps1
 
     # The script will output the filtered user data.
 #>
