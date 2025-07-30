@@ -1,0 +1,3 @@
+$PSVersionTable
+
+$env:computername
