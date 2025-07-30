@@ -75,6 +75,19 @@ New-AzAutomationSourceControl @params
 ```
 Once done you should see a new entry under source control in your Azure Automation account click it and enable Auto sync
 
+### Internal Cmdlets
+Reference: https://learn.microsoft.com/en-us/azure/automation/shared-resources/modules#internal-cmdlets
+
+| Cmdlet                       | Description                                                                                                                               |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `Get-AutomationCertificate`  | Get-AutomationCertificate [-Name] <string> [<CommonParameters>]                                                                           |
+| `Get-AutomationConnection`   | Get-AutomationConnection [-Name] <string> [-DoNotDecrypt] [<CommonParameters>]                                                            |
+| `Get-AutomationPSCredential` | Get-AutomationPSCredential [-Name] <string> [<CommonParameters>]                                                                          |
+| `Get-AutomationVariable`     | Get-AutomationVariable [-Name] <string> [-DoNotDecrypt] [<CommonParameters>]                                                              |
+| `Set-AutomationVariable`     | Set-AutomationVariable [-Name] <string> -Value <Object> [<CommonParameters>]                                                              |
+| `Start-AutomationRunbook`    | Start-AutomationRunbook [-Name] <string> [-Parameters <IDictionary>] [-RunOn <string>] [-JobId <guid>] [<CommonParameters>]               |
+| `Wait-AutomationJob`         | Wait-AutomationJob -Id <guid[]> [-TimeoutInMinutes <int>] [-DelayInSeconds <int>] [-OutputJobsTransitionedToRunning] [<CommonParameters>] |
+
 
 ### Bugs / gotchas
 
