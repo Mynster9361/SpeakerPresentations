@@ -1,36 +1,31 @@
 # Import the ActionableMessages module
+
 Import-Module ActionableMessages
-# Import the Microsoft Graph Authentication module
-Import-Module Microsoft.Graph.Authentication
 
-$originatorId = $env:originatorId
-$httpURL = $env:httpURL
-$tenantId = $env:tenantId
-$userToSendTo = $env:userToSendTo
-$whatsNew = "https://mynster9361.github.io/posts/ActionableMessagesModuleWhatsNew/"
-
+# Tenant ID, Client ID, and Client Secret for the MS Graph API
+$OriginatorId = ""
+$tenantId = ""
+$clientId = ""
+$clientSecret = ""
+$userToSendFrom = ""
+$userToSendTo = ""
+$endPoint = ""
 
 # Create an application usage survey card using the prebuilt function
 $appCardParams = @{
-  OriginatorId     = "software-survey-system"
+  OriginatorId     = $OriginatorId
   ApplicationName  = "Adobe Photoshop"
   Version          = "2025"
   Vendor           = "Adobe"
   Department       = "Design"
   TicketNumber     = "SAM-2023-004"
-  ResponseEndpoint = $httpURL
+  ResponseEndpoint = $endPoint
 }
 
 $appCard = New-AMApplicationUsageSurveyCard @appCardParams
 
 Show-AMCardPreview -card $appCard
 
-# Tenant ID, Client ID, and Client Secret for the MS Graph API
-$tenantId = $env:tenantId
-$clientId = $env:clientId
-$clientSecret = $env:clientSecret
-$userToSendFrom = $env:userToSendFrom
-$userToSendTo = $env:userToSendTo
 
 # Prepare the card for email
 $graphParams = Export-AMCardForEmail -Card $appCard -Subject "Application Usage Survey" -ToRecipients $userToSendTo -CreateGraphParams
