@@ -2,7 +2,16 @@
 # regex:https://.+\.logic\.azure\.com/
 # Header: CARD-UPDATE-IN-BODY - true
 
-$uri = ""
+# Tenant ID, Client ID, and Client Secret for the MS Graph API
+$OriginatorId = $env:OriginatorId
+$tenantId = $env:tenantId
+$clientId = $env:clientId
+$clientSecret = $env:clientSecret
+$userToSendFrom = $env:userToSendFrom
+$userToSendTo = $env:userToSendTo
+$endPoint = $env:endPoint
+
+
 $testBody = @{
   "Action"    = "Approve"
   "New_Owner" = "John Doe"
@@ -15,29 +24,21 @@ $testBody = @{
   )
 }
 $testBodyJson = $testBody | ConvertTo-Json -Depth 10
-Invoke-RestMethod -Uri $uri -Method POST -Body $testBodyJson -ContentType "application/json"
+Invoke-RestMethod -Uri $endPoint -Method POST -Body $testBodyJson -ContentType "application/json"
 
 $simpleAccountCardParams = @{
-  OriginatorId     = "0882e9ee-a02c-40c8-aad9-d4800d79d495"
+  OriginatorId     = $OriginatorId
   Username         = "asmith"
   AccountOwner     = "Alice Smith"
   LastLoginDate    = (Get-Date).AddDays(-60)
   InactiveDays     = 60
-  ResponseEndpoint = $uri
+  ResponseEndpoint = $endPoint
   ResponseBody     = "{`"ticketNumber`": `"$TicketNumber`", `"username`": `"$Username`", `"accountStatus`": `"{{account-status.value}}`", `"comment`": `"{{comment.value}}`", `"transferTo`": `"{{transfer-to.value}}`}"
 }
 
 $accountCard = New-AMAccountVerificationCard @simpleAccountCardParams
 
 
-
-# Tenant ID, Client ID, and Client Secret for the MS Graph API
-# https://outlook.office.com/connectors/oam/publish/Show?id=0882e9ee-a02c-40c8-aad9-d4800d79d495&scope=TestUsers
-$tenantId = $env:tenantId
-$clientId = $env:clientId
-$clientSecret = $env:clientSecret
-$userToSendFrom = $env:userToSendFrom
-$userToSendTo = $env:userToSendTo
 
 # Prepare the card for email
 $graphParams = Export-AMCardForEmail -Card $accountCard -Subject "Account Verification" -ToRecipients $userToSendTo -CreateGraphParams -FallbackText "Your email client doesn't support Adaptive Cards"

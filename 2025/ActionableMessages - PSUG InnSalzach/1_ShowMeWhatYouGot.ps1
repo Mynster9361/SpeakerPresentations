@@ -3,13 +3,14 @@
 Import-Module ActionableMessages
 
 # Tenant ID, Client ID, and Client Secret for the MS Graph API
-$OriginatorId = ""
-$tenantId = ""
-$clientId = ""
-$clientSecret = ""
-$userToSendFrom = ""
-$userToSendTo = ""
-$endPoint = ""
+$OriginatorId = $env:OriginatorId
+$tenantId = $env:tenantId
+$clientId = $env:clientId
+$clientSecret = $env:clientSecret
+$userToSendFrom = $env:userToSendFrom
+$userToSendTo = $env:userToSendTo
+$endPoint = $env:endPoint
+
 
 # Create an application usage survey card using the prebuilt function
 $appCardParams = @{

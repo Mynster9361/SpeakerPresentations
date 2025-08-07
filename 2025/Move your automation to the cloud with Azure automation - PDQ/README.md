@@ -75,7 +75,7 @@ New-AzAutomationSourceControl @params
 ```
 Once done you should see a new entry under source control in your Azure Automation account click it and enable Auto sync
 
-### Internal Cmdlets
+### Internal Cmdlets (Not available on linux)
 Reference: https://learn.microsoft.com/en-us/azure/automation/shared-resources/modules#internal-cmdlets
 
 | Cmdlet                       | Description                                                                                                                               |
