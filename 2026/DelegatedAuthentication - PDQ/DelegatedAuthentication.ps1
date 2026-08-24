@@ -16,7 +16,7 @@ Get-EntraToken
 # Reuse our previous connection and request the id utilizing the following
 # invoke-entraRequest -Path 'organization?$select=id'
 
-Connect-EntraService -DeviceCode -ClientID Graph -TenantID 6877a65d-c276-4229-8aee-836d5543d597
+Connect-EntraService -DeviceCode -ClientID Graph -TenantID <Tenant-ID>
 
 Get-EntraToken
 
