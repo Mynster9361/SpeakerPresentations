@@ -16,7 +16,7 @@ jobs:
 
                   Connect-EntraService -ClientID $env:CLIENT_ID -TenantID $env:AZURE_TENANT_ID -Federated
 
-                  Get-EntraToken
+                  Get-EntraToken | select -ExcludeProperty TokenData, AccessToke
               env:
                   AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
                   CLIENT_ID: ${{ secrets.CLIENT_ID }}
