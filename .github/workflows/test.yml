@@ -1,0 +1,22 @@
+name: test
+
+on:
+    workflow_dispatch:
+
+jobs:
+    get-token:
+        runs-on: windows-latest
+        permissions:
+            id-token: write # Require write permission to Fetch an OIDC token.
+        steps:
+            - name: Get an Entra token via the federated credential
+              shell: pwsh
+              run: |
+                  Install-Module EntraAuth -Scope CurrentUser -Force
+
+                  Connect-EntraService -ClientID $env:CLIENT_ID -TenantID $env:AZURE_TENANT_ID -Federated
+
+                  Get-EntraToken
+              env:
+                  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+                  CLIENT_ID: ${{ secrets.CLIENT_ID }}
