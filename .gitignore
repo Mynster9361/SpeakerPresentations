@@ -1,1 +1,10 @@
 2025/MSGRAPH - Filtering - Advanced Filtering - Batching - PSUG InnSalzach/created-demo-resources.json
+
+# Terraform
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/*.tfplan
+
+# Generated demo secrets/certs - never commit these
+2026/ApplicationAuthentication - PDQ/terraform/generated/
